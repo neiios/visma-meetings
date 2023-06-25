@@ -1,0 +1,74 @@
+[
+  {
+    "meetingId": "98f98a2a-1277-4938-9351-f972c1a70dbf",
+    "name": "Team Building Meeting",
+    "responsiblePersonId": "fdfe567a-3456-4535-9997-df98a17a0098",
+    "description": "A crucial meeting to enhance team cohesion and morale.",
+    "category": "TEAM_BUILDING",
+    "type": "LIVE",
+    "startDate": "2023-06-26T10:00:00Z",
+    "endDate": "2023-06-26T12:00:00Z",
+    "participants": [
+      {
+        "id": "fdfe567a-3456-4535-9997-df98a17a0098",
+        "name": "Jane"
+      },
+      {
+        "id": "ab8b9393-23b4-4a52-9a56-e4b7999d10ee",
+        "name": "Sam"
+      }
+    ]
+  },
+  {
+    "meetingId": "fbd9f2d2-2222-4444-8888-f0c0c0c0c0c0",
+    "name": "Code Review Session",
+    "responsiblePersonId": "bdcf5678-1234-5678-9012-fghijk987654",
+    "description": "A focused session to review and improve our codebase.",
+    "category": "CODE_MONKEY",
+    "type": "IN_PERSON",
+    "startDate": "2023-06-27T14:00:00Z",
+    "endDate": "2023-06-27T16:00:00Z",
+    "participants": [
+      {
+        "id": "bdcf5678-1234-5678-9012-fghijk987654",
+        "name": "Oliver"
+      },
+      {
+        "id": "a234b234-2345-2345-2345-b234b2342342",
+        "name": "Evelyn"
+      },
+      {
+        "id": "c345c345-3456-3456-3456-c345c3453453",
+        "name": "Liam"
+      }
+    ]
+  },
+  {
+    "meetingId": "dbf28c3f-7777-4f4f-bbbb-e3e3e3e3e3e3",
+    "name": "Quarterly HUB Meeting",
+    "responsiblePersonId": "xyz123abc-9876-5432-1098-zyx321cba876",
+    "description": "Our quarterly meeting to review overall progress and plan for the next quarter.",
+    "category": "HUB",
+    "type": "LIVE",
+    "startDate": "2023-06-28T09:00:00Z",
+    "endDate": "2023-06-28T11:00:00Z",
+    "participants": [
+      {
+        "id": "xyz123abc-9876-5432-1098-zyx321cba876",
+        "name": "Charlotte"
+      },
+      {
+        "id": "p123q123-1234-5678-9012-q123p1231231",
+        "name": "Lucas"
+      },
+      {
+        "id": "r234s234-2345-6789-0123-s234r2342342",
+        "name": "Sophia"
+      },
+      {
+        "id": "t345u345-3456-7890-1234-u345t3453453",
+        "name": "Jackson"
+      }
+    ]
+  }
+]
