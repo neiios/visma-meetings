@@ -27,8 +27,9 @@ public class MeetingRepository {
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         try {
-            tempMeetings = objectMapper.readValue(new File("src/main/resources/db.json"), new TypeReference<List<Meeting>>() {
-            });
+            tempMeetings = objectMapper.readValue(
+                    new File("src/main/resources/db.json"),
+                    new TypeReference<List<Meeting>>() {});
         } catch (IOException e) {
             log.error(String.format("Failed to read saved meetings. Error: %s", e.getMessage()));
             tempMeetings = new ArrayList<>();

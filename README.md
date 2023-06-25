@@ -2,10 +2,10 @@
 
 ## Plan
 
-- [ ] Create a new meeting 
-  - [ ] Store meeting information in JSON
-  - [ ] Restore state on restarts
-  - [ ] Create a meeting model with proper properties
+- [x] Create a new meeting 
+  - [x] Store meeting information in JSON
+  - [x] Restore state on restarts
+  - [x] Create a meeting model with proper properties
   - [ ] Tests
   - [ ] Checks
 - [ ] Delete a meeting

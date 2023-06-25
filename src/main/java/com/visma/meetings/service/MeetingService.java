@@ -19,17 +19,16 @@ public class MeetingService {
     }
 
     public void addMeeting(MeetingCreationRequest meetingCreationRequest) {
-        Meeting meeting = Meeting.builder()
-                .id(UUID.randomUUID())
-                .name(meetingCreationRequest.name())
-                .responsiblePersonId(meetingCreationRequest.responsiblePersonId())
-                .description(meetingCreationRequest.description())
-                .category(meetingCreationRequest.category())
-                .type(meetingCreationRequest.type())
-                .startDate(meetingCreationRequest.startDate())
-                .endDate(meetingCreationRequest.endDate())
-                .participants(meetingCreationRequest.participants())
-                .build();
+        Meeting meeting = new Meeting(
+                UUID.randomUUID(),
+                meetingCreationRequest.name(),
+                meetingCreationRequest.responsiblePersonId(),
+                meetingCreationRequest.description(),
+                meetingCreationRequest.category(),
+                meetingCreationRequest.type(),
+                meetingCreationRequest.startDate(),
+                meetingCreationRequest.endDate(),
+                meetingCreationRequest.participants());
 
         meetingRepository.addMeeting(meeting);
     }

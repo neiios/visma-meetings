@@ -1,14 +1,15 @@
 package com.visma.meetings.model;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Data
-@Builder
+@AllArgsConstructor
 public class Meeting {
     private UUID id;
     private String name;
@@ -18,6 +19,6 @@ public class Meeting {
     private MeetingType type;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private List<Person> participants;
+    private List<Person> participants = new ArrayList<>();
 }
 
