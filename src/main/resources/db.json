@@ -1,73 +1,77 @@
 [
   {
-    "meetingId": "98f98a2a-1277-4938-9351-f972c1a70dbf",
-    "name": "Team Building Meeting",
-    "responsiblePersonId": "fdfe567a-3456-4535-9997-df98a17a0098",
-    "description": "A crucial meeting to enhance team cohesion and morale.",
-    "category": "TEAM_BUILDING",
-    "type": "LIVE",
-    "startDate": "2023-06-26T10:00:00Z",
-    "endDate": "2023-06-26T12:00:00Z",
-    "participants": [
-      {
-        "id": "fdfe567a-3456-4535-9997-df98a17a0098",
-        "name": "Jane"
-      },
-      {
-        "id": "ab8b9393-23b4-4a52-9a56-e4b7999d10ee",
-        "name": "Sam"
-      }
-    ]
-  },
-  {
-    "meetingId": "fbd9f2d2-2222-4444-8888-f0c0c0c0c0c0",
-    "name": "Code Review Session",
-    "responsiblePersonId": "bdcf5678-1234-5678-9012-fghijk987654",
-    "description": "A focused session to review and improve our codebase.",
+    "id": "dc8ba031-0cc9-4aed-812a-cee165b79ca4",
+    "name": "Richard's Meeting",
+    "responsiblePersonId": "45c73b35-4cff-4434-ac5d-e861b2e2ed07",
+    "description": "A very important meeting.",
     "category": "CODE_MONKEY",
     "type": "IN_PERSON",
-    "startDate": "2023-06-27T14:00:00Z",
-    "endDate": "2023-06-27T16:00:00Z",
+    "startDate": "2023-06-25T10:00:00",
+    "endDate": "2023-06-25T11:30:00",
     "participants": [
       {
-        "id": "bdcf5678-1234-5678-9012-fghijk987654",
-        "name": "Oliver"
+        "id": "45c73b35-4cff-4434-ac5d-e861b2e2ed07",
+        "name": "richard"
       },
       {
-        "id": "a234b234-2345-2345-2345-b234b2342342",
-        "name": "Evelyn"
+        "id": "f2b96df8-5fa9-4ae7-89c1-ae4779df1b99",
+        "name": "alice"
       },
       {
-        "id": "c345c345-3456-3456-3456-c345c3453453",
-        "name": "Liam"
+        "id": "e98ddc15-6fe5-4e1b-a726-3c53b2a0df51",
+        "name": "bob"
       }
     ]
   },
   {
-    "meetingId": "dbf28c3f-7777-4f4f-bbbb-e3e3e3e3e3e3",
-    "name": "Quarterly HUB Meeting",
-    "responsiblePersonId": "xyz123abc-9876-5432-1098-zyx321cba876",
-    "description": "Our quarterly meeting to review overall progress and plan for the next quarter.",
+    "id": "95b5f5b9-e7d1-412f-b62c-230af7a92bde",
+    "name": "Marketing Meeting",
+    "responsiblePersonId": "e98ddc15-6fe5-4e1b-a726-3c53b2a0df51",
+    "description": "Discussing marketing strategies.",
     "category": "HUB",
     "type": "LIVE",
-    "startDate": "2023-06-28T09:00:00Z",
-    "endDate": "2023-06-28T11:00:00Z",
+    "startDate": "2023-06-25T13:00:00",
+    "endDate": "2023-06-25T14:30:00",
     "participants": [
       {
-        "id": "xyz123abc-9876-5432-1098-zyx321cba876",
-        "name": "Charlotte"
+        "id": "e98ddc15-6fe5-4e1b-a726-3c53b2a0df51",
+        "name": "bob"
       },
       {
-        "id": "p123q123-1234-5678-9012-q123p1231231",
-        "name": "Lucas"
+        "id": "45c73b35-4cff-4434-ac5d-e861b2e2ed07",
+        "name": "richard"
       },
       {
-        "id": "r234s234-2345-6789-0123-s234r2342342",
-        "name": "Sophia"
+        "id": "f2b96df8-5fa9-4ae7-89c1-ae4779df1b99",
+        "name": "alice"
       },
       {
-        "id": "t345u345-3456-7890-1234-u345t3453453",
-        "name": "Jackson"
+        "id": "c4e03c95-15de-489f-9291-71985e45b66e",
+        "name": "jane"
+      }
+    ]
+  },
+  {
+    "id": "3c9c9f33-f6c3-410e-b59d-7b650adc04c3",
+    "name": "Team Building Activity",
+    "responsiblePersonId": "c4e03c95-15de-489f-9291-71985e45b66e",
+    "description": "Engaging team-building exercises.",
+    "category": "TEAM_BUILDING",
+    "type": "IN_PERSON",
+    "startDate": "2023-06-25T15:00:00",
+    "endDate": "2023-06-25T16:30:00",
+    "participants": [
+      {
+        "id": "c4e03c95-15de-489f-9291-71985e45b66e",
+        "name": "jane"
+      },
+      {
+        "id": "e98ddc15-6fe5-4e1b-a726-3c53b2a0df51",
+        "name": "bob"
+      },
+      {
+        "id": "45c73b35-4cff-4434-ac5d-e861b2e2ed07",
+        "name": "richard"
       }
     ]
   }
