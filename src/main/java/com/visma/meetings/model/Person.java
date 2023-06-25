@@ -1,13 +1,13 @@
 package com.visma.meetings.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
 
 import java.util.UUID;
 
 @Data
-@NonNull
+@AllArgsConstructor
 public class Person {
     private UUID id;
-    private String fullName;
+    private String name;
 }
