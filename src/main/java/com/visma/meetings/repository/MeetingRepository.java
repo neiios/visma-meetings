@@ -55,6 +55,7 @@ public class MeetingRepository {
         // Responsible person can't be removed from the meeting
         meetings.removeIf(meeting -> meeting.getId() == meetingId
                 && meeting.getResponsiblePersonId() != person.getId());
+        saveStateToDatabase();
     }
 
     private void saveStateToDatabase() {
