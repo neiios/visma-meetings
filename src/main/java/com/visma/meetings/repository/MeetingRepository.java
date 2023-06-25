@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.visma.meetings.model.Meeting;
-import com.visma.meetings.model.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -52,10 +51,13 @@ public class MeetingRepository {
         saveStateToDatabase();
     }
 
-    public void removePersonFromMeeting(UUID meetingId, Person person) {
-        // Responsible person can't be removed from the meeting
-        meetings.removeIf(meeting -> meeting.getId() == meetingId
-                && meeting.getResponsiblePersonId() != person.getId());
+    public void removePersonFromMeeting(UUID meetingId, UUID personId) {
+        for (Meeting meeting : meetings) {
+            if (meeting.getId().equals(meetingId)){
+                meeting.getParticipants().removeIf(participant -> participant.getId().equals(personId));
+            }
+        }
+
         saveStateToDatabase();
     }
 

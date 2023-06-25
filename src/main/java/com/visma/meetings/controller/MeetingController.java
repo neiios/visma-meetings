@@ -24,20 +24,21 @@ public class MeetingController {
     }
 
     @DeleteMapping("{meetingId}")
-    public void deleteMeeting(@PathVariable("meetingId") UUID meetingId, @RequestParam UUID requester) {
+    public void deleteMeeting(@PathVariable("meetingId") UUID meetingId,
+                              @RequestParam UUID requester) {
         meetingService.deleteMeeting(meetingId, requester);
     }
 
-    @PutMapping("{meetingId}/person")
+    @PostMapping("{meetingId}/participants")
     public void addPersonToMeeting(@PathVariable("meetingId") UUID meetingId,
                                    @RequestBody Person person) {
         meetingService.addPersonToMeeting(meetingId, person);
     }
 
-    @DeleteMapping("{meetingId}/person")
+    @DeleteMapping("{meetingId}/participants")
     public void removePersonFromMeeting(@PathVariable("meetingId") UUID meetingId,
-                                        @RequestBody Person person) {
-        meetingService.removePersonFromMeeting(meetingId, person);
+                                        @RequestParam UUID personId) {
+        meetingService.removePersonFromMeeting(meetingId, personId);
     }
 
     @GetMapping

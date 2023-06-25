@@ -8,15 +8,15 @@
   - [x] Create a meeting model with proper properties
   - [ ] Tests
   - [ ] Checks
-- [ ] Delete a meeting
+- [x] Delete a meeting
   - [ ] Tests 
-  - [ ] Checks
+  - [x] Checks
 - [ ] Add a person to a meeting
   - [ ] Tests 
   - [ ] Checks
-- [ ] Remove a person from a meeting
+- [x] Remove a person from a meeting
   - [ ] Tests
-  - [ ] Checks
+  - [x] Checks
 - [ ] List all meetings
   - [ ] Filter:
     - [ ] by description 

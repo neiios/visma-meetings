@@ -36,11 +36,11 @@ public class MeetingService {
     }
 
     public void deleteMeeting(UUID meetingId, UUID requesterId) {
-        if (requesterIsAllowedToDelete(meetingId, requesterId))
+        if (personIsResponsibleForMeeting(meetingId, requesterId))
             meetingRepository.deleteMeeting(meetingId);
     }
 
-    private boolean requesterIsAllowedToDelete(UUID meetingId, UUID requesterId) {
+    private boolean personIsResponsibleForMeeting(UUID meetingId, UUID personId) {
         List<Meeting> meetings = meetingRepository.getMeetings();
 
         Optional<Meeting> requestedMeeting = meetings.stream()
@@ -50,7 +50,7 @@ public class MeetingService {
         return requestedMeeting
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Meeting with ID [%s] does not exist.".formatted(meetingId)))
-                .getResponsiblePersonId().equals(requesterId);
+                .getResponsiblePersonId().equals(personId);
     }
 
     public List<Meeting> getMeetings() {
@@ -64,7 +64,8 @@ public class MeetingService {
                 .ifPresent(item -> item.getParticipants().add(person));
     }
 
-    public void removePersonFromMeeting(UUID meetingId, Person person) {
-        meetingRepository.removePersonFromMeeting(meetingId, person);
+    public void removePersonFromMeeting(UUID meetingId, UUID personId) {
+        if (!personIsResponsibleForMeeting(meetingId, personId))
+            meetingRepository.removePersonFromMeeting(meetingId, personId);
     }
 }
