@@ -24,8 +24,8 @@ public class MeetingController {
     }
 
     @DeleteMapping("{meetingId}")
-    public void deleteMeeting(@PathVariable("meetingId") UUID meetingId) {
-        meetingService.deleteMeeting(meetingId);
+    public void deleteMeeting(@PathVariable("meetingId") UUID meetingId, @RequestParam UUID requester) {
+        meetingService.deleteMeeting(meetingId, requester);
     }
 
     @PutMapping("{meetingId}/person")

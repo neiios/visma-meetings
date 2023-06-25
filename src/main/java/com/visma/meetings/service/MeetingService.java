@@ -1,6 +1,7 @@
 package com.visma.meetings.service;
 
 import com.visma.meetings.dto.MeetingCreationRequest;
+import com.visma.meetings.exception.ResourceNotFoundException;
 import com.visma.meetings.model.Meeting;
 import com.visma.meetings.model.Person;
 import com.visma.meetings.repository.MeetingRepository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -33,8 +35,22 @@ public class MeetingService {
         meetingRepository.addMeeting(meeting);
     }
 
-    public void deleteMeeting(UUID meetingId) {
-        meetingRepository.deleteMeeting(meetingId);
+    public void deleteMeeting(UUID meetingId, UUID requesterId) {
+        if (requesterIsAllowedToDelete(meetingId, requesterId))
+            meetingRepository.deleteMeeting(meetingId);
+    }
+
+    private boolean requesterIsAllowedToDelete(UUID meetingId, UUID requesterId) {
+        List<Meeting> meetings = meetingRepository.getMeetings();
+
+        Optional<Meeting> requestedMeeting = meetings.stream()
+                .filter(meeting -> meeting.getId().equals(meetingId))
+                .findAny();
+
+        return requestedMeeting
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Meeting with ID [%s] does not exist.".formatted(meetingId)))
+                .getResponsiblePersonId().equals(requesterId);
     }
 
     public List<Meeting> getMeetings() {
