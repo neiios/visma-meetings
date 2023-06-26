@@ -1,5 +1,9 @@
 # Meetings Manager
 
+## Endpoints
+
+![Endpoint Diagram](images/img.png)
+
 ## TODO
 
 - [x] Create a new meeting 
