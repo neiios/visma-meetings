@@ -1,7 +1,10 @@
 package com.visma.meetings.service;
 
 import com.visma.meetings.dto.MeetingDTO;
+import com.visma.meetings.dto.PersonDTO;
 import com.visma.meetings.exception.RequestValidationException;
+import com.visma.meetings.mapper.MeetingMapper;
+import com.visma.meetings.mapper.PersonMapper;
 import com.visma.meetings.model.Meeting;
 import com.visma.meetings.model.MeetingCategory;
 import com.visma.meetings.model.MeetingType;
@@ -27,11 +30,15 @@ import static org.mockito.Mockito.*;
 class MeetingServiceTest {
     @Mock
     private MeetingRepository meetingRepository;
+    private MeetingMapper meetingMapper;
+    private PersonMapper personMapper;
     private MeetingService meetingService;
 
     @BeforeEach
     void setUp() {
-        meetingService = new MeetingService(meetingRepository);
+        meetingMapper = new MeetingMapper();
+        personMapper = new PersonMapper();
+        meetingService = new MeetingService(meetingRepository, meetingMapper, personMapper);
     }
 
     @Test
@@ -99,6 +106,32 @@ class MeetingServiceTest {
         String expectedMessage = "can't be removed as they are responsible";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void addPersonToMeeting() {
+        UUID zeroUUID = new UUID(0, 0);
+        List<Person> participants = List.of(
+                new Person(zeroUUID, "Responsible"),
+                new Person(new UUID(1, 1), "Another"));
+        Meeting meeting = Meeting.builder()
+                .id(zeroUUID)
+                .responsiblePersonId(zeroUUID)
+                .participants(participants)
+                .build();
+
+        when(meetingRepository.getMeetings()).thenReturn(List.of(meeting));
+
+        UUID meetingID = meeting.getId();
+        PersonDTO additionalPersonDTO = new PersonDTO(
+                new UUID(2, 2),
+                "Additional person");
+        Person additionalPerson = personMapper.apply(additionalPersonDTO);
+
+        meetingService.addPersonToMeeting(meetingID, additionalPersonDTO);
+
+        verify(meetingRepository, times(1))
+                .addPersonToMeeting(meeting.getId(), additionalPerson);
     }
 
     @Test
