@@ -128,9 +128,11 @@ public class MeetingService {
     }
 
     public void removePersonFromMeeting(UUID meetingId, UUID personId) {
-        if (!personIsResponsibleForMeeting(meetingId, personId)) {
-            meetingRepository.removePersonFromMeeting(meetingId, personId);
+        if (personIsResponsibleForMeeting(meetingId, personId)) {
+            throw new RequestValidationException("Requested person can't be removed as they are responsible for the meeting.");
         }
+
+        meetingRepository.removePersonFromMeeting(meetingId, personId);
     }
 
     private boolean personIsResponsibleForMeeting(UUID meetingId, UUID personId) {
@@ -139,7 +141,8 @@ public class MeetingService {
         return requestedMeeting
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Meeting with ID [%s] does not exist.".formatted(meetingId)))
-                .getResponsiblePersonId().equals(personId);
+                .getResponsiblePersonId()
+                .equals(personId);
     }
 
     private Optional<Meeting> findMeetingById(UUID meetingId) {
