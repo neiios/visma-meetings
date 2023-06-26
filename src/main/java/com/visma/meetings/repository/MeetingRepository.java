@@ -38,7 +38,7 @@ public class MeetingRepository {
         try {
             tempMeetings = objectMapper.readValue(
                     new File(pathToDB),
-                    new TypeReference<List<Meeting>>() {
+                    new TypeReference<>() {
                     });
             log.info(String.format("Read the data from %s", pathToDB));
         } catch (IOException e) {
@@ -63,13 +63,15 @@ public class MeetingRepository {
     }
 
     public void removePersonFromMeeting(UUID meetingId, UUID personId) {
-        Meeting requestedMeeting = meetings.stream()
-                .filter(meeting -> meeting.getId().equals(meetingId))
-                .findAny()
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Meeting with ID [%s] does not exist.".formatted(meetingId)));
+        Meeting requestedMeeting = getRequestedMeeting(meetingId);
+        List<Person> requestedMeetingParticipants = requestedMeeting.getParticipants();
+        boolean anyParticipantsMatch = requestedMeetingParticipants.stream()
+                .anyMatch(participant -> participant.getId().equals(personId));
 
-        List<Person> newParticipants = requestedMeeting.getParticipants().stream()
+        if (!anyParticipantsMatch)
+            throw new ResourceNotFoundException("Person [%s] is not part of the meeting.".formatted(meetingId));
+
+        List<Person> newParticipants = requestedMeetingParticipants.stream()
                 .filter(Predicate.not(participant -> participant.getId().equals(personId)))
                 .toList();
 
@@ -88,5 +90,19 @@ public class MeetingRepository {
         } catch (IOException e) {
             log.error(String.format("Failed to save the meetings to the database. Error: %s", e.getMessage()));
         }
+    }
+
+    public void addPersonToMeeting(UUID meetingId, Person person) {
+        Meeting requestedMeeting = getRequestedMeeting(meetingId);
+        requestedMeeting.getParticipants().add(person);
+        saveStateToDatabase();
+    }
+
+    private Meeting getRequestedMeeting(UUID meetingId) {
+        return meetings.stream()
+                .filter(meeting -> meeting.getId().equals(meetingId))
+                .findAny()
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Meeting with ID [%s] does not exist.".formatted(meetingId)));
     }
 }
