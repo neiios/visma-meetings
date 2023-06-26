@@ -1,10 +1,10 @@
 package com.visma.meetings.controller;
 
-import com.visma.meetings.dto.MeetingCreationRequest;
+import com.visma.meetings.dto.MeetingDTO;
+import com.visma.meetings.dto.PersonDTO;
 import com.visma.meetings.model.Meeting;
 import com.visma.meetings.model.MeetingCategory;
 import com.visma.meetings.model.MeetingType;
-import com.visma.meetings.model.Person;
 import com.visma.meetings.service.MeetingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class MeetingController {
     }
 
     @PostMapping
-    public void createMeeting(@RequestBody MeetingCreationRequest meeting) {
+    public void createMeeting(@RequestBody MeetingDTO meeting) {
         meetingService.addMeeting(meeting);
     }
 
@@ -35,7 +35,7 @@ public class MeetingController {
 
     @PostMapping("{meetingId}/participants")
     public ResponseEntity<String> addPersonToMeeting(@PathVariable("meetingId") UUID meetingId,
-                                                     @RequestBody Person person) {
+                                                     @RequestBody PersonDTO person) {
         return meetingService.addPersonToMeeting(meetingId, person);
     }
 

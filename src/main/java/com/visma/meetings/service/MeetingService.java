@@ -1,8 +1,11 @@
 package com.visma.meetings.service;
 
-import com.visma.meetings.dto.MeetingCreationRequest;
+import com.visma.meetings.dto.MeetingDTO;
+import com.visma.meetings.dto.PersonDTO;
 import com.visma.meetings.exception.RequestValidationException;
 import com.visma.meetings.exception.ResourceNotFoundException;
+import com.visma.meetings.mapper.MeetingMapper;
+import com.visma.meetings.mapper.PersonMapper;
 import com.visma.meetings.model.Meeting;
 import com.visma.meetings.model.MeetingCategory;
 import com.visma.meetings.model.MeetingType;
@@ -20,23 +23,15 @@ import java.util.stream.Stream;
 @Service
 public class MeetingService {
     private final MeetingRepository meetingRepository;
+    private final MeetingMapper meetingMapper = new MeetingMapper();
+    private final PersonMapper personMapper = new PersonMapper();
 
     public MeetingService(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
     }
 
-    public void addMeeting(MeetingCreationRequest meetingCreationRequest) {
-        Meeting meeting = new Meeting(
-                UUID.randomUUID(),
-                meetingCreationRequest.name(),
-                meetingCreationRequest.responsiblePersonId(),
-                meetingCreationRequest.description(),
-                meetingCreationRequest.category(),
-                meetingCreationRequest.type(),
-                meetingCreationRequest.startDate(),
-                meetingCreationRequest.endDate(),
-                meetingCreationRequest.participants());
-
+    public void addMeeting(MeetingDTO meetingDTO) {
+        Meeting meeting = meetingMapper.apply(meetingDTO);
         meetingRepository.addMeeting(meeting);
     }
 
@@ -98,7 +93,9 @@ public class MeetingService {
         return meetings.toList();
     }
 
-    public ResponseEntity<String> addPersonToMeeting(UUID meetingId, Person person) {
+    public ResponseEntity<String> addPersonToMeeting(UUID meetingId, PersonDTO personDTO) {
+        Person person = personMapper.apply(personDTO);
+
         Meeting requestedMeeting = findMeetingById(meetingId).orElseThrow(() ->
                 new ResourceNotFoundException("Meeting with ID [%s] does not exist.".formatted(meetingId)));
 
@@ -113,6 +110,14 @@ public class MeetingService {
         return ResponseEntity.ok("The time participant was added is " + LocalDateTime.now());
     }
 
+    public void removePersonFromMeeting(UUID meetingId, UUID personId) {
+        if (personIsResponsibleForMeeting(meetingId, personId)) {
+            throw new RequestValidationException("Requested person can't be removed as they are responsible for the meeting.");
+        }
+
+        meetingRepository.removePersonFromMeeting(meetingId, personId);
+    }
+
     private boolean personIsBusy(UUID id, LocalDateTime newMeetingStartDate, LocalDateTime newMeetingEndDate) {
         var meetings = meetingRepository.getMeetings();
 
@@ -125,14 +130,6 @@ public class MeetingService {
         return meetingsPersonIsIn.stream().anyMatch(meeting ->
                 meeting.getStartDate().isBefore(newMeetingEndDate) &&
                         newMeetingStartDate.isBefore(meeting.getStartDate()));
-    }
-
-    public void removePersonFromMeeting(UUID meetingId, UUID personId) {
-        if (personIsResponsibleForMeeting(meetingId, personId)) {
-            throw new RequestValidationException("Requested person can't be removed as they are responsible for the meeting.");
-        }
-
-        meetingRepository.removePersonFromMeeting(meetingId, personId);
     }
 
     private boolean personIsResponsibleForMeeting(UUID meetingId, UUID personId) {

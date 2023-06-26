@@ -1,6 +1,6 @@
 package com.visma.meetings.service;
 
-import com.visma.meetings.dto.MeetingCreationRequest;
+import com.visma.meetings.dto.MeetingDTO;
 import com.visma.meetings.exception.RequestValidationException;
 import com.visma.meetings.model.Meeting;
 import com.visma.meetings.model.MeetingCategory;
@@ -36,8 +36,8 @@ class MeetingServiceTest {
 
     @Test
     void canAddMeeting() {
-        MeetingCreationRequest testMeetingCreationRequest = MeetingCreationRequest.builder().build();
-        meetingService.addMeeting(testMeetingCreationRequest);
+        MeetingDTO testMeetingDTO = MeetingDTO.builder().build();
+        meetingService.addMeeting(testMeetingDTO);
 
         ArgumentCaptor<Meeting> meetingArgumentCaptor = ArgumentCaptor.forClass(Meeting.class);
         verify(meetingRepository).addMeeting(meetingArgumentCaptor.capture());
