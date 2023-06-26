@@ -38,8 +38,9 @@ public class MeetingService {
     }
 
     public void deleteMeeting(UUID meetingId, UUID requesterId) {
-        if (personIsResponsibleForMeeting(meetingId, requesterId))
+        if (personIsResponsibleForMeeting(meetingId, requesterId)) {
             meetingRepository.deleteMeeting(meetingId);
+        }
     }
 
     public List<Meeting> getMeetings() {
@@ -50,11 +51,13 @@ public class MeetingService {
         Meeting requestedMeeting = findMeetingById(meetingId).orElseThrow(() ->
                 new ResourceNotFoundException("Meeting with ID [%s] does not exist.".formatted(meetingId)));
 
-        if (personIsAlreadyInSameMeeting(requestedMeeting, person.getId()))
+        if (personIsAlreadyInSameMeeting(requestedMeeting, person.getId())) {
             throw new RequestValidationException("The user you are trying to add is already present in the same meeting.");
+        }
 
-        if (personIsBusy(person.getId(), requestedMeeting.getStartDate(), requestedMeeting.getEndDate()))
+        if (personIsBusy(person.getId(), requestedMeeting.getStartDate(), requestedMeeting.getEndDate())) {
             return ResponseEntity.ok("Participant has overlapping meetings.");
+        }
 
         return ResponseEntity.ok("The time participant was added is " + LocalDateTime.now());
     }
@@ -74,8 +77,9 @@ public class MeetingService {
     }
 
     public void removePersonFromMeeting(UUID meetingId, UUID personId) {
-        if (!personIsResponsibleForMeeting(meetingId, personId))
+        if (!personIsResponsibleForMeeting(meetingId, personId)) {
             meetingRepository.removePersonFromMeeting(meetingId, personId);
+        }
     }
 
     private boolean personIsResponsibleForMeeting(UUID meetingId, UUID personId) {
