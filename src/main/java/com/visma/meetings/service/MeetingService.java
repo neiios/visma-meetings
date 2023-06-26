@@ -23,11 +23,15 @@ import java.util.stream.Stream;
 @Service
 public class MeetingService {
     private final MeetingRepository meetingRepository;
-    private final MeetingMapper meetingMapper = new MeetingMapper();
-    private final PersonMapper personMapper = new PersonMapper();
+    private final MeetingMapper meetingMapper;
+    private final PersonMapper personMapper;
 
-    public MeetingService(MeetingRepository meetingRepository) {
+    public MeetingService(MeetingRepository meetingRepository,
+                          MeetingMapper meetingMapper,
+                          PersonMapper personMapper) {
         this.meetingRepository = meetingRepository;
+        this.meetingMapper = meetingMapper;
+        this.personMapper = personMapper;
     }
 
     public void addMeeting(MeetingDTO meetingDTO) {
@@ -36,8 +40,9 @@ public class MeetingService {
     }
 
     public void deleteMeeting(UUID meetingId, UUID requesterId) {
-        if (!personIsResponsibleForMeeting(meetingId, requesterId))
+        if (!personIsResponsibleForMeeting(meetingId, requesterId)) {
             throw new RequestValidationException("Only a person responsible for a meeting can delete it.");
+        }
 
         meetingRepository.deleteMeeting(meetingId);
     }

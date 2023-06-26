@@ -99,9 +99,9 @@ class MeetingServiceTest {
         when(meetingRepository.getMeetings()).thenReturn(List.of(meeting));
 
         UUID meetingID = meeting.getId();
-        Exception exception = assertThrows(RequestValidationException.class, () -> {
-            meetingService.removePersonFromMeeting(meetingID, zeroUUID);
-        });
+        Exception exception = assertThrows(RequestValidationException.class, () ->
+                meetingService.removePersonFromMeeting(meetingID, zeroUUID)
+        );
 
         String expectedMessage = "can't be removed as they are responsible";
         String actualMessage = exception.getMessage();
