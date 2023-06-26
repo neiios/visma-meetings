@@ -11,19 +11,19 @@
 - [x] Delete a meeting
   - [ ] Tests 
   - [x] Checks
-- [ ] Add a person to a meeting
+- [x] Add a person to a meeting
   - [ ] Tests 
-  - [ ] Checks
+  - [x] Checks
 - [x] Remove a person from a meeting
   - [ ] Tests
   - [x] Checks
-- [ ] List all meetings
-  - [ ] Filter:
-    - [ ] by description 
-    - [ ] by responsible person 
-    - [ ] by category 
-    - [ ] by type 
-    - [ ] by dates (range) 
-    - [ ] by the number of attendees 
+- [x] List all meetings
+  - [x] Filter:
+    - [x] by description 
+    - [x] by responsible person 
+    - [x] by category 
+    - [x] by type 
+    - [x] by dates (range) 
+    - [x] by the number of attendees 
   - [ ] Tests
-  - [ ] Checks
+  - [x] Checks

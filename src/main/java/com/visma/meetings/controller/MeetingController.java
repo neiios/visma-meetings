@@ -2,11 +2,14 @@ package com.visma.meetings.controller;
 
 import com.visma.meetings.dto.MeetingCreationRequest;
 import com.visma.meetings.model.Meeting;
+import com.visma.meetings.model.MeetingCategory;
+import com.visma.meetings.model.MeetingType;
 import com.visma.meetings.model.Person;
 import com.visma.meetings.service.MeetingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +46,20 @@ public class MeetingController {
     }
 
     @GetMapping
-    public List<Meeting> getMeetings() {
-        return meetingService.getMeetings();
+    public List<Meeting> getMeetings(
+            @RequestParam(required = false) String containsInDescription,
+            @RequestParam(required = false) UUID responsiblePersonId,
+            @RequestParam(required = false) MeetingCategory category,
+            @RequestParam(required = false) MeetingType type,
+            @RequestParam(required = false) LocalDateTime startDate,
+            @RequestParam(required = false) LocalDateTime endDate,
+            @RequestParam(required = false) Integer numberOfAttendees) {
+        return meetingService.getMeetings(containsInDescription,
+                responsiblePersonId,
+                category,
+                type,
+                startDate,
+                endDate,
+                numberOfAttendees);
     }
 }

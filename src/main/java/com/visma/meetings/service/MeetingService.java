@@ -4,6 +4,8 @@ import com.visma.meetings.dto.MeetingCreationRequest;
 import com.visma.meetings.exception.RequestValidationException;
 import com.visma.meetings.exception.ResourceNotFoundException;
 import com.visma.meetings.model.Meeting;
+import com.visma.meetings.model.MeetingCategory;
+import com.visma.meetings.model.MeetingType;
 import com.visma.meetings.model.Person;
 import com.visma.meetings.repository.MeetingRepository;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 public class MeetingService {
@@ -43,8 +46,56 @@ public class MeetingService {
         }
     }
 
-    public List<Meeting> getMeetings() {
-        return meetingRepository.getMeetings();
+    public List<Meeting> getMeetings(
+            String containsInDescription,
+            UUID responsiblePersonId,
+            MeetingCategory category,
+            MeetingType type,
+            LocalDateTime afterDate,
+            LocalDateTime beforeDate,
+            Integer numberOfAttendees) {
+        Stream<Meeting> meetings = meetingRepository.getMeetings().stream();
+
+        if (containsInDescription != null) {
+            // filtering must be case-insensitive
+            meetings = meetings
+                    .filter(meeting ->
+                            meeting.getDescription().toLowerCase().contains(containsInDescription.toLowerCase()));
+        }
+
+        if (responsiblePersonId != null) {
+            meetings = meetings
+                    .filter(meeting ->
+                            meeting.getResponsiblePersonId().equals(responsiblePersonId));
+        }
+
+        if (category != null) {
+            meetings = meetings
+                    .filter(meeting ->
+                            meeting.getCategory().equals(category));
+        }
+
+        if (type != null) {
+            meetings = meetings
+                    .filter(meeting ->
+                            meeting.getType().equals(type));
+        }
+
+        if (numberOfAttendees != null) {
+            meetings = meetings
+                    .filter(meeting ->
+                            meeting.getParticipants().size() > numberOfAttendees);
+        }
+
+        // Both can be not-null and create a window effect
+        if (beforeDate != null) {
+            meetings = meetings.filter(meeting -> meeting.getEndDate().isBefore(beforeDate));
+        }
+        if (afterDate != null) {
+            meetings = meetings.filter(meeting -> meeting.getStartDate().isAfter(afterDate));
+        }
+
+        return meetings.toList();
     }
 
     public ResponseEntity<String> addPersonToMeeting(UUID meetingId, Person person) {
