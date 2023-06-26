@@ -6,6 +6,6 @@ import java.util.UUID;
 
 @Builder
 public record PersonDTO(
-        UUID uuid,
+        UUID id,
         String name) {
 }

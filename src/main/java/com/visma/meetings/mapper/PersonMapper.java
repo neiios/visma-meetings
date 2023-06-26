@@ -11,7 +11,7 @@ public class PersonMapper implements Function<PersonDTO, Person> {
     @Override
     public Person apply(PersonDTO personDTO) {
         return new Person(
-                personDTO.uuid(),
+                personDTO.id(),
                 personDTO.name());
     }
 }
