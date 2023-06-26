@@ -36,9 +36,10 @@ public class MeetingService {
     }
 
     public void deleteMeeting(UUID meetingId, UUID requesterId) {
-        if (personIsResponsibleForMeeting(meetingId, requesterId)) {
-            meetingRepository.deleteMeeting(meetingId);
-        }
+        if (!personIsResponsibleForMeeting(meetingId, requesterId))
+            throw new RequestValidationException("Only a person responsible for a meeting can delete it.");
+
+        meetingRepository.deleteMeeting(meetingId);
     }
 
     public List<Meeting> getMeetings(
