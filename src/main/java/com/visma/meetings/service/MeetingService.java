@@ -104,6 +104,8 @@ public class MeetingService {
             throw new RequestValidationException("The user you are trying to add is already present in the same meeting.");
         }
 
+        meetingRepository.addPersonToMeeting(meetingId, person);
+
         if (personIsBusy(person.getId(), requestedMeeting.getStartDate(), requestedMeeting.getEndDate())) {
             return ResponseEntity.ok("Participant has overlapping meetings.");
         }
