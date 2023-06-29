@@ -1,6 +1,7 @@
 package com.visma.meetings.service;
 
-import com.visma.meetings.dto.MeetingDTO;
+import com.visma.meetings.dto.MeetingResponse;
+import com.visma.meetings.dto.MeetingRequest;
 import com.visma.meetings.dto.PersonDTO;
 import com.visma.meetings.exception.RequestValidationException;
 import com.visma.meetings.mapper.MeetingMapper;
@@ -30,21 +31,17 @@ import static org.mockito.Mockito.*;
 class MeetingServiceTest {
     @Mock
     private MeetingRepository meetingRepository;
-    private MeetingMapper meetingMapper;
-    private PersonMapper personMapper;
     private MeetingService meetingService;
 
     @BeforeEach
     void setUp() {
-        meetingMapper = new MeetingMapper();
-        personMapper = new PersonMapper();
-        meetingService = new MeetingService(meetingRepository, meetingMapper, personMapper);
+        meetingService = new MeetingService(meetingRepository);
     }
 
     @Test
     void canAddMeeting() {
-        MeetingDTO testMeetingDTO = MeetingDTO.builder().build();
-        meetingService.addMeeting(testMeetingDTO);
+        MeetingRequest testMeetingRequest = MeetingRequest.builder().build();
+        meetingService.addMeeting(testMeetingRequest);
 
         ArgumentCaptor<Meeting> meetingArgumentCaptor = ArgumentCaptor.forClass(Meeting.class);
         verify(meetingRepository).addMeeting(meetingArgumentCaptor.capture());
@@ -126,7 +123,7 @@ class MeetingServiceTest {
         PersonDTO additionalPersonDTO = new PersonDTO(
                 new UUID(2, 2),
                 "Additional person");
-        Person additionalPerson = personMapper.apply(additionalPersonDTO);
+        Person additionalPerson = PersonMapper.dtoToPerson(additionalPersonDTO);
 
         meetingService.addPersonToMeeting(meetingID, additionalPersonDTO);
 
@@ -165,23 +162,25 @@ class MeetingServiceTest {
         );
 
         when(meetingRepository.getMeetings()).thenReturn(testMeetings);
+        List<MeetingResponse> expectedMeetingsResponse = testMeetings.stream()
+                .map(MeetingMapper::meetingToResponse).toList();
 
-        List<Meeting> receivedMeetings = meetingService.getMeetings(null, null,
+        List<MeetingResponse> receivedMeetings = meetingService.getMeetings(null, null,
                 null, null, null, null, null);
-        assertEquals(testMeetings, receivedMeetings);
+        assertEquals(expectedMeetingsResponse, receivedMeetings);
 
         receivedMeetings = meetingService.getMeetings("first", zeroUUID,
                 MeetingCategory.HUB, null, null, null, null);
-        assertEquals(List.of(testMeetings.get(0)), receivedMeetings);
+        assertEquals(List.of(expectedMeetingsResponse.get(0)), receivedMeetings);
 
         receivedMeetings = meetingService.getMeetings(null, null,
                 null, null,
                 LocalDateTime.of(2020, 10, 10, 12, 10),
                 LocalDateTime.of(2024, 10, 10, 10, 10), null);
-        assertEquals(testMeetings, receivedMeetings);
+        assertEquals(expectedMeetingsResponse, receivedMeetings);
 
         receivedMeetings = meetingService.getMeetings(null, null,
                 null, MeetingType.IN_PERSON, null, null, 1);
-        assertEquals(List.of(testMeetings.get(1)), receivedMeetings);
+        assertEquals(List.of(expectedMeetingsResponse.get(1)), receivedMeetings);
     }
 }

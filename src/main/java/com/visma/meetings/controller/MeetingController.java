@@ -1,8 +1,8 @@
 package com.visma.meetings.controller;
 
-import com.visma.meetings.dto.MeetingDTO;
+import com.visma.meetings.dto.MeetingResponse;
+import com.visma.meetings.dto.MeetingRequest;
 import com.visma.meetings.dto.PersonDTO;
-import com.visma.meetings.model.Meeting;
 import com.visma.meetings.model.MeetingCategory;
 import com.visma.meetings.model.MeetingType;
 import com.visma.meetings.service.MeetingService;
@@ -23,7 +23,7 @@ public class MeetingController {
     }
 
     @PostMapping
-    public void createMeeting(@RequestBody MeetingDTO meeting) {
+    public void createMeeting(@RequestBody MeetingRequest meeting) {
         meetingService.addMeeting(meeting);
     }
 
@@ -46,7 +46,7 @@ public class MeetingController {
     }
 
     @GetMapping
-    public List<Meeting> getMeetings(
+    public List<MeetingResponse> getMeetings(
             @RequestParam(required = false) String containsInDescription,
             @RequestParam(required = false) UUID responsiblePersonId,
             @RequestParam(required = false) MeetingCategory category,

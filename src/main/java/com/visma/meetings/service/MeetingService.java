@@ -1,6 +1,7 @@
 package com.visma.meetings.service;
 
-import com.visma.meetings.dto.MeetingDTO;
+import com.visma.meetings.dto.MeetingResponse;
+import com.visma.meetings.dto.MeetingRequest;
 import com.visma.meetings.dto.PersonDTO;
 import com.visma.meetings.exception.RequestValidationException;
 import com.visma.meetings.exception.ResourceNotFoundException;
@@ -23,19 +24,13 @@ import java.util.stream.Stream;
 @Service
 public class MeetingService {
     private final MeetingRepository meetingRepository;
-    private final MeetingMapper meetingMapper;
-    private final PersonMapper personMapper;
 
-    public MeetingService(MeetingRepository meetingRepository,
-                          MeetingMapper meetingMapper,
-                          PersonMapper personMapper) {
+    public MeetingService(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
-        this.meetingMapper = meetingMapper;
-        this.personMapper = personMapper;
     }
 
-    public void addMeeting(MeetingDTO meetingDTO) {
-        Meeting meeting = meetingMapper.apply(meetingDTO);
+    public void addMeeting(MeetingRequest meetingRequest) {
+        Meeting meeting = MeetingMapper.requestToMeeting(meetingRequest);
         meetingRepository.addMeeting(meeting);
     }
 
@@ -47,7 +42,7 @@ public class MeetingService {
         meetingRepository.deleteMeeting(meetingId);
     }
 
-    public List<Meeting> getMeetings(
+    public List<MeetingResponse> getMeetings(
             String containsInDescription,
             UUID responsiblePersonId,
             MeetingCategory category,
@@ -96,11 +91,11 @@ public class MeetingService {
             meetings = meetings.filter(meeting -> meeting.getStartDate().isAfter(afterDate));
         }
 
-        return meetings.toList();
+        return meetings.map(MeetingMapper::meetingToResponse).toList();
     }
 
     public ResponseEntity<String> addPersonToMeeting(UUID meetingId, PersonDTO personDTO) {
-        Person person = personMapper.apply(personDTO);
+        Person person = PersonMapper.dtoToPerson(personDTO);
 
         Meeting requestedMeeting = findMeetingById(meetingId).orElseThrow(() ->
                 new ResourceNotFoundException("Meeting with ID [%s] does not exist.".formatted(meetingId)));
